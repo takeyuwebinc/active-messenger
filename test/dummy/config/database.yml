@@ -1,0 +1,16 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: 10
+  host: <%= ENV.fetch('DB_HOST') { 'localhost' } %>
+  port: <%= ENV.fetch('DB_ADAPTER') { 3306 } %>
+  username: <%= ENV.fetch('DB_USERNAME') { 'root' } %>
+  password: <%= ENV.fetch('DB_PASSWORD') { '' } %>
+
+development:
+  <<: *default
+  database: dummy_development
+
+test:
+  <<: *default
+  database: dummy_test

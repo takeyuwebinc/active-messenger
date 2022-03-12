@@ -1,0 +1,46 @@
+version: "3"
+volumes:
+  mysql-data:
+    driver: "local"
+services:
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: "%"
+      TZ: /usr/share/zoneinfo/Asia/Tokyo
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "3002:1080"
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile.dev
+      args:
+        - DIR=/src
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/src
+    user: ${ARG_USER:-ruby}
+    command: >
+      /bin/sh -c "rm -f test/dummy/tmp/pids/server.pid && bundle install && bin/rails s -b 0.0.0.0"
+    ports:
+      - 3000:3000
+    environment:
+      BUNDLE_PATH: ${BUNDLE_PATH:-/src/vendor/bundle}
+      SMTP_HOST: mailcatcher
+      SMTP_PORT: 1025
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    depends_on:
+      - mysql
+      - mailcatcher

@@ -1,0 +1,13 @@
+<h1>Chats#show</h1>
+<p>Find me in app/views/active_messenger/chats/show.html.erb</p>
+
+<h2><%= chat_name(@chat) %></h2>
+
+<div>
+  <%= render @messages %>
+<div>
+
+<%= form_with model: ActiveMessenger::TextMessage.new, url: chat_text_messages_path(@chat) do |f| %>
+  <%= f.text_area :text %>
+  <%= f.submit %>
+<% end %>

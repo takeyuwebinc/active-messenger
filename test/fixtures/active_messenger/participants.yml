@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+taro_personal:
+  user: taro
+  chat: personal_chat
+
+jiro_personal:
+  user: jiro
+  chat: personal_chat
+
+taro_group:
+  user: taro
+  chat: group_chat
+
+jiro_group:
+  user: jiro
+  chat: group_chat
+
+hanako_group:
+  user: hanako
+  chat: group_chat
